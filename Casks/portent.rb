@@ -8,7 +8,7 @@ cask "portent" do
   desc "Dev servers, AI agent sessions and Claude plan usage in the menu bar"
   homepage "https://github.com/adrianfernandezalv/portent-releases"
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
   # Sparkle updates the app in place.
   auto_updates true
 
