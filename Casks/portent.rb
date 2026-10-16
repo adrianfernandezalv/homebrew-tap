@@ -8,23 +8,27 @@ cask "portent" do
   desc "Dev servers, AI agent sessions and Claude plan usage in the menu bar"
   homepage "https://github.com/adrianfernandezalv/portent-releases"
 
-  depends_on macos: :sonoma
   # Sparkle updates the app in place.
   auto_updates true
+  depends_on macos: :sonoma
 
   app "Portent.app"
 
   # Self-signed, not notarized: clear the quarantine flag so Gatekeeper doesn't block the
   # first launch (the same thing the install script does).
-  postflight do
-    system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{appdir}/Portent.app"]
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args:           ["-dr", "com.apple.quarantine", "{{appdir}}/Portent.app"],
+        must_succeed:   false,
+        writable_paths: ["Portent.app"],
+        writable_base:  :appdir
   end
 
   uninstall quit: "dev.portent.app"
 
   zap trash: [
     "~/Library/Application Support/portent",
-    "~/Library/Preferences/dev.portent.app.plist",
     "~/Library/Caches/dev.portent.app",
+    "~/Library/Preferences/dev.portent.app.plist",
   ]
 end
